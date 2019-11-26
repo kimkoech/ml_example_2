@@ -125,6 +125,47 @@ metrics(x_2, truth = dvote, estimate = pred_dvote) %>%
     tab_header("Model 2 Evaluation on All Data")
 
 # Much better! Repo before class.
+```
+
+
+```{r}
+# clean up the above cod eo tmake it cleaner, key functions: logistic_reg()
+# set_engine(), fit(), predict(), bind_cols(), metrics()
+
+
+logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(dvote ~ gender + party + state + office, data = clean) %>% 
+  predict(new_data = clean) %>% 
+  bind_cols(clean) %>% 
+  metrics(truth = dvote, estimate = .pred_class) %>% 
+  gt() %>% 
+    tab_header("Model 2 Evaluation on All Data")
+```
+
+
+```{r}
+
+split_result <- clean %>% initial_split(prop = 0.01)
+
+training_data <- training(split_result)
+testing_data <- testing(split_result)
+
+logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(dvote ~ gender + party + state + office, data = training_data) %>% 
+  predict(new_data = testing_data) %>% 
+  bind_cols(testing_data) %>% 
+  metrics(truth = dvote, estimate = .pred_class) %>% 
+  gt() %>% 
+    tab_header("Model 2 Evaluation on All Data")
 
 ```
+
+
+
+```{r}
+
+```
+
 
